@@ -1,0 +1,23 @@
+
+
+body {
+    color: aqua;
+    text-align: center;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+}
+
+ #grid {
+    display: grid;
+    grid-template-columns: repeat(15, 1fr);
+    justify-self: center;
+       
+  }
+
+.cell {
+    background-color: lightblue;
+    border: 1px solid black;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    align-items: center;
+}
