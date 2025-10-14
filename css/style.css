@@ -10,6 +10,7 @@ body {
     display: grid;
     grid-template-columns: repeat(15, 1fr);
     justify-self: center;
+    color: black;
        
   }
 
@@ -21,3 +22,4 @@ body {
     height: 40px;
     align-items: center;
 }
+
