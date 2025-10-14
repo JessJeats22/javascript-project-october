@@ -15,40 +15,17 @@
 
 // * Outputs / Feedback (What will the app output to the screen)
 
-// const person = {
-//     name: John,
-//     age: 32,
-//     height: 
-// }
 
-// person.age
+// Step 1 = creating grid
 
-
-/*-------------------------------- Variables --------------------------------*/
 let cellsEl;
-
-// snake = array/list of 4 squares 
-
-let snakeCells = [107, 108, 109, 110];
-document.getElementById('107');
-snakeCells.length = 4;
-// console.log(snakeCells);
-
-let foodCell = document.getElementById('0');
-// console.log(food);
-
-
-/*------------------------ Cached Element References ------------------------*/
-
-const howToPlayBtn = document.querySelector('.instructions');
 
 const gridEl = document.querySelector('#grid');
 
-// creating grid
 const makeGrid = () => {
 
-    const width = 15
-    const height = 15
+    let width = 15
+    let height = 15
     const cellCount = width * height;
     // console.log(cellCount)
 
@@ -63,36 +40,51 @@ const makeGrid = () => {
     }
      cellsEl = document.querySelectorAll('.cell');
 }
+
 makeGrid();
 
+/*-------------------------------- Variables --------------------------------*/
 
-// console.dir(gridEl);
-console.dir(cellsEl);
-// console.dir (howToPlayBtn);
+let foodCell;
+// let foodCell = document.getElementById('');
+// foodCell.addEventListener('click', () =>{
+// console.log(foodCell);
+// });
+
+let snakeCells = [107, 108, 109, 110];
+console.log(snakeCells);
+
+
+/*------------------------ Cached Element References ------------------------*/
+
+const howToPlayBtn = document.querySelector('.instructions');
+
+
 /*-------------------------------- Functions --------------------------------*/
 // function to make food move, function to make snake move, function to start the game
+
+
+// Step 2: creating & moving "food"
+const showFood = () => {
+    // allocate food cell a random location
+    foodCellLocation = Math.floor(Math.random() * 225);
+    // show this visuall on the grid
+    foodCell = document.getElementById(`${foodCellLocation}`);
+    // style the foor color red 
+    foodCell.style.backgroundColor = "red";
+    
+    return foodCell;
+}
+showFood();
+
+
+
 
 const showSnakeCells = () => {
     snakeCells.style.backgroundColor = "green";
 }
 
 showSnakeCells();
-
-const showFood = () => {
-    // define foodcell color
-    foodCell.style.backgroundColor = "red";
-    // define food cell location
-    foodCellLocation = Math.floor(Math.random() * 225);
-    // assign
-    foodCell = document.getElementById(`${foodCellLocation}`);
-
-    foodCell.style.backgroundColor = "red";
-
-
-    return foodCell;
-
-}
-showFood();
 
 
 
