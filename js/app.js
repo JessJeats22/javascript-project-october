@@ -18,7 +18,7 @@
 
 // Step 1 = creating grid
 
-let cellsEl;
+let cellsEl; // creating this variable to put cellsEl in the global scope 
 
 const gridEl = document.querySelector('#grid');
 
@@ -38,21 +38,12 @@ const makeGrid = () => {
         gridEl.appendChild(cell);
 
     }
-     cellsEl = document.querySelectorAll('.cell');
+    cellsEl = document.querySelectorAll('.cell');
 }
 
 makeGrid();
 
 /*-------------------------------- Variables --------------------------------*/
-
-let foodCell;
-// let foodCell = document.getElementById('');
-// foodCell.addEventListener('click', () =>{
-// console.log(foodCell);
-// });
-
-let snakeCells = [107, 108, 109, 110];
-console.log(snakeCells);
 
 
 /*------------------------ Cached Element References ------------------------*/
@@ -62,34 +53,43 @@ const howToPlayBtn = document.querySelector('.instructions');
 
 /*-------------------------------- Functions --------------------------------*/
 // function to make food move, function to make snake move, function to start the game
+// Step 2: Creating & moving "food"
 
+let foodCell;
 
-// Step 2: creating & moving "food"
 const showFood = () => {
     // allocate food cell a random location
-    foodCellLocation = Math.floor(Math.random() * 225);
+    let foodCellLocation = Math.floor(Math.random() * 225);
     // show this visuall on the grid
-    foodCell = document.getElementById(`${foodCellLocation}`);
+    let foodCell = document.getElementById(`${foodCellLocation}`);
     // style the foor color red 
     foodCell.style.backgroundColor = "red";
-    
-    return foodCell;
 }
 showFood();
 
+// Step 3: Creating Snake 
 
+let snakeCellsLocation = [document.getElementById(107),document.getElementById(108),document.getElementById(109), document.getElementById(110)];
+// console.log(snakeCells)
 
+ const showSnakeCells = () => {
+    snakeCellsLocation.forEach((cell) => {
+        cell.style.backgroundColor = 'green';
+        }
+    )};
+    showSnakeCells();
 
-const showSnakeCells = () => {
-    snakeCells.style.backgroundColor = "green";
+// Step 4: Moving Snake
+
+const movingSnake = () => {
+    
 }
-
-showSnakeCells();
-
-
 
 /*----------------------------- Event Listeners -----------------------------*/
 // event listeners for arrows
+
+
+
 // event listener for button click 
 
 
