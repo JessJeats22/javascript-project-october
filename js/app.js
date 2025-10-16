@@ -16,16 +16,17 @@
 // * Outputs / Feedback (What will the app output to the screen)
 
 
+
 // Step 1 = creating grid
 
 let cellsEl; // creating this variable to put cellsEl in the global scope 
+let width = 15
+let height = 15
 
 const gridEl = document.querySelector('#grid');
 
 const makeGrid = () => {
 
-    let width = 15
-    let height = 15
     const cellCount = width * height;
     // console.log(cellCount)
 
@@ -39,61 +40,123 @@ const makeGrid = () => {
 
     }
     cellsEl = document.querySelectorAll('.cell');
+    // console.dir(cellsEl);
 }
 
 makeGrid();
 
-/*-------------------------------- Variables --------------------------------*/
+// console.log(cellsEl)
+// console.log(cellsEl[107])
 
 
-/*------------------------ Cached Element References ------------------------*/
+// Step 2: Creating Snake 
 
-const howToPlayBtn = document.querySelector('.instructions');
+let snakeCellsLocation = [
+    cellsEl[107],
+    cellsEl[108],
+    cellsEl[109],
+    cellsEl[110],];
+// console.log(snakeCells)
+
+// Step 3: show the snake on the board:
+
+const showSnakeCells = () => {
+    snakeCellsLocation.forEach((cell, idx, array) => {
+        cell.style.backgroundColor = 'green';
+    }
+    )
+};
+showSnakeCells();
+
+//Step 4 - track snake direction with event listener
+
+let direction;
+
+document.addEventListener('keydown', (event) => {
+    if (event.key === 'ArrowUp' && direction !== 'down') direction = 'up';
+    else if (event.key === 'ArrowDown' && direction !== 'up') direction = 'down';
+    else if (event.key === 'ArrowRight' && direction !== 'left') direction = 'right';
+    else if (event.key === 'ArrowLeft' && direction !== 'right') direction = 'left';
+});
 
 
-/*-------------------------------- Functions --------------------------------*/
-// function to make food move, function to make snake move, function to start the game
-// Step 2: Creating & moving "food"
 
+// Step 5: Moving Snake - add a cell to the array whilst removing a cell from the array on loop 
+
+const makeSnakeMove = () => {
+    const snakeHead = snakeCellsLocation[snakeCellsLocation.length - 1]; // grabs the last element of the snake (the head) and stores it for later use
+    const headIndex = Number(snakeHead.id); //converts the head cell’s id (string) using Number(value) function, into a number as we will need it in the number value
+    let nextCellIndex; // will store where the snake is about to move but no value for this yet so null, defined below
+    // console.log(nextCellIndex)
+
+    if (direction === 'right') nextCellIndex = headIndex + 1; // + 1 on the index, defining nextCellIndex based on travel direction
+    else if (direction === 'left') nextCellIndex = headIndex - 1; //- 1 on the index
+    else if (direction === 'up') nextCellIndex = headIndex - width; // go one row up so - 15 from cellindex
+    else if (direction === 'down') nextCellIndex = headIndex + width; //go one row down so +15 from cell index 
+
+    // Determine next cell based on direction 
+
+    const nextCell = cellsEl[nextCellIndex]; // stored cellsEl as an array (list) of grid cells, creating a variable (nextCell) as the DOM element and linking in to the next index
+
+
+
+    //add new snake head 
+    nextCell.style.backgroundColor = 'green'; // keeps the head green
+    snakeCellsLocation.push(nextCell);
+
+    //remove snake tail 
+    const snakeTail = snakeCellsLocation.shift();
+    snakeTail.style.backgroundColor = '';
+
+    // detecting food and skipping removing the tail to allow snake to grow!!
+
+    if (nextCellIndex === Number(foodCell.id)) { //reminder - Number(value) is a built-in JavaScript function...It takes anything that can represent a number(value) and converts it into a real number type.
+        console.log('I ate the food!');
+        showFood();
+    }
+
+    // edge detection! 
+
+    else if (nextCellIndex < width) { // any index less than width is top (15 in this case)
+        console.log('Ive hit the top!');
+    } else if (nextCellIndex >= width * (height - 1)) { // any index less than width of bottom 
+        console.log('Ive hit the bottom!');
+    } else if (nextCellIndex % width === 0) { // use he modulus operator to give us a remainder of 0 
+        console.log('Ive hit the left edge!')
+    } else if (nextCellIndex % width === width - 1) {
+        console.log('Ive hit the right edge!')
+    } else if (snakeCellsLocation.includes(nextCellIndex)) { //reminder .includes() is a built-in JavaScript array method checking if an array contains a specific value.
+        console.log('Ive hit myself!')
+    }
+
+}
+
+
+// Step 6: make snake move automatically - basic syntax: setInterval(functionToRun, delayInMilliseconds);
+
+setInterval(makeSnakeMove, 500);
+
+// step 7 - show food cell on the grid
 let foodCell;
 
 const showFood = () => {
     // allocate food cell a random location
     let foodCellLocation = Math.floor(Math.random() * 225);
-    // show this visuall on the grid
-    let foodCell = document.getElementById(`${foodCellLocation}`);
+    // ensure that the food doesn't land on the snake 
+    while (snakeCellsLocation.includes(foodCellLocation)) {
+        foodCellLocation = Math.floor(Math.random() * 225);
+    }
+    // show this visually on the grid
+    foodCell = cellsEl[foodCellLocation]; //no need for a "let foodCell" as alread have foodCell as a variable in global scope 
     // style the foor color red 
     foodCell.style.backgroundColor = "red";
 }
 showFood();
 
-// Step 3: Creating Snake 
 
-let snakeCellsLocation = [document.getElementById(107),document.getElementById(108),document.getElementById(109), document.getElementById(110)];
-// console.log(snakeCells)
-
- const showSnakeCells = () => {
-    snakeCellsLocation.forEach((cell) => {
-        cell.style.backgroundColor = 'green';
-        }
-    )};
-    showSnakeCells();
-
-// Step 4: Moving Snake
-
-const movingSnake = () => {
-    
+// if snake cells collide with food cell, re locate food cell
+if (nextCellIndex === foodCellLocation) {
+    console.log('I ate the food!');
 }
-
-/*----------------------------- Event Listeners -----------------------------*/
-// event listeners for arrows
-
-
-
-// event listener for button click 
-
-
-// document.querySelectorAll('.cell').addEventListener ('click')
-
-/*------------------------------- Page Load ------------------------------*/
+// foodCellLocation = Math.floor(Math.random() * 225);
 
