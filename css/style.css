@@ -1,16 +1,26 @@
 
 
 body {
-    color: aqua;
+    margin-top: 100px;
+     color: aqua;
     text-align: center;
     font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+     background-color: #111; 
 }
+
 
  #grid {
     display: grid;
     grid-template-columns: repeat(15, 1fr);
     justify-self: center;
     color: black;
+    margin: 50px auto;
+
+    border: 4px solid #00ffff;
+    border-radius: 10px; 
+    box-shadow: 0 0 20px #00ffff, 0 0 40px #00ffff inset;
+    padding: 4px; 
+    background-color: #000022; 
        
   }
 
@@ -21,5 +31,11 @@ body {
     width: 40px;
     height: 40px;
     align-items: center;
+    transition: background-color 0.1s;
+
 }
 
+#instructions {
+    background-color: lightblue;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+ }
