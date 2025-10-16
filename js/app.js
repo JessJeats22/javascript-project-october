@@ -21,6 +21,8 @@ let cellsEl; // creating this global variable to put cellsEl in the global scope
 let width = 15 // this will be my number of columns
 let height = 15 // this will be my number of rows
 
+// Step 8 - create food cell and make it appear in random locations 
+
 const gridEl = document.querySelector('#grid'); // grabbing grid element from HTML via the DOM and storing for access 
 
 const makeGrid = () => {
@@ -66,6 +68,7 @@ showSnakeCells();
 let direction; // global variable to track the snake movement, using let as this is currently undefined and needs to change 
 
 document.addEventListener('keydown', (event) => {
+    console.log("Key pressed:", event.key);
     if (event.key === 'ArrowUp' && direction !== 'down') direction = 'up'; // The direction !== opposite check prevents reversing directly into itself.
     else if (event.key === 'ArrowDown' && direction !== 'up') direction = 'down';
     else if (event.key === 'ArrowRight' && direction !== 'left') direction = 'right';
@@ -115,6 +118,7 @@ const makeSnakeMove = () => {
  
     if (snakeCellsLocation.includes(nextCellIndex)) { //use .include method - Checks if any cell’s id matches the next index.
         console.log('Ive hit myself!');
+       resetGame();
         return;
     }
     // highlight the new snake head 
@@ -137,7 +141,7 @@ const makeSnakeMove = () => {
     }
 }
 
-// Step 8 - create food cell and make it appear in random locations 
+gameInterval = setInterval(makeSnakeMove, 200);
 
 
 
@@ -156,7 +160,7 @@ const showFood = () => {
 showFood();
 
 const resetGame = () => {
-    console.log("resetting game")
+    console.log("resetting game");
 
     clearInterval(gameInterval);
 
