@@ -19,31 +19,31 @@
 
 // Step 1 = creating grid
 
-let cellsEl; // creating this variable to put cellsEl in the global scope 
+let cellsEl; // creating this variable to put cellsEl in the global scope to access later 
 let width = 15
 let height = 15
 
-const gridEl = document.querySelector('#grid');
+const gridEl = document.querySelector('#grid'); // grabbing grid from HTML via the DOM and storing for access 
 
-const makeGrid = () => {
+const makeGrid = () => { 
 
-    const cellCount = width * height;
+    const cellCount = width * height; // cellCount now equates to 225 (15x15), not harcoding cellCount so I can change size of grid dynamically 
     // console.log(cellCount)
 
     for (let i = 0; i < cellCount; i++) {
-        const cell = document.createElement('div')
+        const cell = document.createElement('div') // using document.createElement to create my 225 divs 
         // console.dir(cell);
-        cell.id = i
+        cell.id = i.  
         cell.classList.add('cell')
         cell.textContent = i;
-        gridEl.appendChild(cell);
+        gridEl.appendChild(cell);  // appending cell to its parent of grid using variable gridEl we created earlier 
 
     }
-    cellsEl = document.querySelectorAll('.cell');
+    cellsEl = document.querySelectorAll('.cell'); // Stores all cells in cellsEl for easy reference, note cellsEl is an ARRAY of DOM ELEMENTS (<div>) ( cells to be accesssed with [] )
     // console.dir(cellsEl);
 }
 
-makeGrid();
+makeGrid(); // calling the actual function tather than just declaring it 
 
 // console.log(cellsEl)
 // console.log(cellsEl[107])
@@ -125,7 +125,7 @@ const makeSnakeMove = () => {
         console.log('Ive hit the left edge!')
     } else if (nextCellIndex % width === width - 1) {
         console.log('Ive hit the right edge!')
-    } else if (snakeCellsLocation.includes(nextCellIndex)) { //reminder .includes() is a built-in JavaScript array method checking if an array contains a specific value.
+    } else if (snakeCellsLocation.some(cell => Number(cell.id) === nextCellIndex)) { //use .some method on arrays - Checks if any cell’s id matches the next index.
         console.log('Ive hit myself!')
     }
 
