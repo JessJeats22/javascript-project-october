@@ -19,27 +19,27 @@
 
 // Step 1 = creating grid
 
-let cellsEl; // creating this variable to put cellsEl in the global scope to access later 
-let width = 15
-let height = 15
+let cellsEl; // creating this global variable to put cellsEl in the global scope to access later 
+let width = 15 // this will be my number of columns
+let height = 15 // this will be my number of rows
 
-const gridEl = document.querySelector('#grid'); // grabbing grid from HTML via the DOM and storing for access 
+const gridEl = document.querySelector('#grid'); // grabbing grid element from HTML via the DOM and storing for access 
 
-const makeGrid = () => { 
+const makeGrid = () => {
 
     const cellCount = width * height; // cellCount now equates to 225 (15x15), not harcoding cellCount so I can change size of grid dynamically 
     // console.log(cellCount)
 
     for (let i = 0; i < cellCount; i++) {
-        const cell = document.createElement('div') // using document.createElement to create my 225 divs 
+        const cell = document.createElement('div') // using document.createElement to create my a new div element and putting it in forLoop to x224 times
         // console.dir(cell);
-        cell.id = i.  
-        cell.classList.add('cell')
+        cell.id = i; // adding a unique ID to each cell so that I can use this later
+        cell.classList.add('cell') // assigning a class list for styling later
         cell.textContent = i;
         gridEl.appendChild(cell);  // appending cell to its parent of grid using variable gridEl we created earlier 
 
     }
-    cellsEl = document.querySelectorAll('.cell'); // Stores all cells in cellsEl for easy reference, note cellsEl is an ARRAY of DOM ELEMENTS (<div>) ( cells to be accesssed with [] )
+    cellsEl = document.querySelectorAll('.cell'); // Stores all cells in cellsEl for easy reference, can access them later with cellsEl[index], note cellsEl is an ARRAY of DOM ELEMENTS (<div>) ( cells to be accesssed with [] )
     // console.dir(cellsEl);
 }
 
@@ -51,29 +51,25 @@ makeGrid(); // calling the actual function tather than just declaring it
 
 // Step 2: Creating Snake 
 
-let snakeCellsLocation = [
-    cellsEl[107],
-    cellsEl[108],
-    cellsEl[109],
-    cellsEl[110],];
-// console.log(snakeCells)
+let snakeCellsLocation = [107, 108, 109, 110]; // storing the snake as and array of indices (numbers!) rather than DOM elements 
+// console.log(snakeCellsLocation)
 
 // Step 3: show the snake on the board:
 
 const showSnakeCells = () => {
-    snakeCellsLocation.forEach((cell, idx, array) => {
-        cell.style.backgroundColor = 'green';
+    snakeCellsLocation.forEach((idx) => {
+        cellsEl[idx].style.backgroundColor = 'green';
     }
     )
 };
 showSnakeCells();
 
-//Step 4 - track snake direction with event listener
+// Step 4 - track snake direction with event listener
 
-let direction;
+let direction; // global variable to track the snake movement, using let as this is currently undefined and needs to change 
 
 document.addEventListener('keydown', (event) => {
-    if (event.key === 'ArrowUp' && direction !== 'down') direction = 'up';
+    if (event.key === 'ArrowUp' && direction !== 'down') direction = 'up'; // The direction !== opposite check prevents reversing directly into itself.
     else if (event.key === 'ArrowDown' && direction !== 'up') direction = 'down';
     else if (event.key === 'ArrowRight' && direction !== 'left') direction = 'right';
     else if (event.key === 'ArrowLeft' && direction !== 'right') direction = 'left';
@@ -85,11 +81,11 @@ document.addEventListener('keydown', (event) => {
 
 const makeSnakeMove = () => {
     const snakeHead = snakeCellsLocation[snakeCellsLocation.length - 1]; // grabs the last element of the snake (the head) and stores it for later use
-    const headIndex = Number(snakeHead.id); //converts the head cell’s id (string) using Number(value) function, into a number as we will need it in the number value
+    const headIndex = snakeHead; // alread a number so .number(value) function not needed to convert )would have been the case if it were a DOM element)
     let nextCellIndex; // will store where the snake is about to move but no value for this yet so null, defined below
     // console.log(nextCellIndex)
 
-    if (direction === 'right') nextCellIndex = headIndex + 1; // + 1 on the index, defining nextCellIndex based on travel direction
+    if (direction === 'right') nextCellIndex = headIndex + 1; // grid math of + 1 on the index, defining nextCellIndex based on travel direction
     else if (direction === 'left') nextCellIndex = headIndex - 1; //- 1 on the index
     else if (direction === 'up') nextCellIndex = headIndex - width; // go one row up so - 15 from cellindex
     else if (direction === 'down') nextCellIndex = headIndex + width; //go one row down so +15 from cell index 
@@ -99,25 +95,30 @@ const makeSnakeMove = () => {
     const nextCell = cellsEl[nextCellIndex]; // stored cellsEl as an array (list) of grid cells, creating a variable (nextCell) as the DOM element and linking in to the next index
 
 
+    if (snakeCellsLocation.includes(nextCellIndex)) { //use .include method - Checks if any cell’s id matches the next index.
+        console.log('Ive hit myself!');
+    }
+    // highlight the new snake head 
 
-    //add new snake head 
-    nextCell.style.backgroundColor = 'green'; // keeps the head green
-    snakeCellsLocation.push(nextCell);
+    else {
+        // safe to move on 
+        cellsEl[nextCellIndex].style.backgroundColor = 'green'; // keeps the head green
+        snakeCellsLocation.push(nextCellIndex);     // pushes the index to add a new head to the snake, not tpushing he element anymore (fix)
 
-    //remove snake tail 
-    const snakeTail = snakeCellsLocation.shift();
-    snakeTail.style.backgroundColor = '';
-
-    // detecting food and skipping removing the tail to allow snake to grow!!
+    }
+    // eating food and skipping removing the tail to allow snake to grow!!
 
     if (nextCellIndex === Number(foodCell.id)) { //reminder - Number(value) is a built-in JavaScript function...It takes anything that can represent a number(value) and converts it into a real number type.
         console.log('I ate the food!');
-        showFood();
+        showFood(); // calling our function here to SHOW NEW FOOD as it was "eaten"
+    } else {
+        const snakeTail = snakeCellsLocation.shift(); // else remove tail to maintain snake length as nothing has happened to the user
+        cellsEl[snakeTail].style.backgroundColor = '';
     }
 
-    // edge detection! 
+    // edge detection / self collision 
 
-    else if (nextCellIndex < width) { // any index less than width is top (15 in this case)
+    if (nextCellIndex < width) { // any index less than width is top (15 in this case)
         console.log('Ive hit the top!');
     } else if (nextCellIndex >= width * (height - 1)) { // any index less than width of bottom 
         console.log('Ive hit the bottom!');
@@ -125,38 +126,30 @@ const makeSnakeMove = () => {
         console.log('Ive hit the left edge!')
     } else if (nextCellIndex % width === width - 1) {
         console.log('Ive hit the right edge!')
-    } else if (snakeCellsLocation.some(cell => Number(cell.id) === nextCellIndex)) { //use .some method on arrays - Checks if any cell’s id matches the next index.
-        console.log('Ive hit myself!')
     }
-
 }
 
 
-// Step 6: make snake move automatically - basic syntax: setInterval(functionToRun, delayInMilliseconds);
+// Step 6: make snake move automatically by repeatedlt calling a function on a timer - basic syntax: setInterval(functionToRun, delayInMilliseconds);
 
 setInterval(makeSnakeMove, 500);
 
 // step 7 - show food cell on the grid
+
 let foodCell;
 
 const showFood = () => {
     // allocate food cell a random location
-    let foodCellLocation = Math.floor(Math.random() * 225);
+    let foodCellLocation = Math.floor(Math.random() * 225); // math.floor ensures a whole number not decimal
     // ensure that the food doesn't land on the snake 
     while (snakeCellsLocation.includes(foodCellLocation)) {
         foodCellLocation = Math.floor(Math.random() * 225);
     }
     // show this visually on the grid
-    foodCell = cellsEl[foodCellLocation]; //no need for a "let foodCell" as alread have foodCell as a variable in global scope 
+    foodCell = cellsEl[foodCellLocation]; //no need for a "let foodCell" as alread have foodCell as a variable in global scope, so jsut defining it no
     // style the foor color red 
     foodCell.style.backgroundColor = "red";
 }
 showFood();
 
-
-// if snake cells collide with food cell, re locate food cell
-if (nextCellIndex === foodCellLocation) {
-    console.log('I ate the food!');
-}
-// foodCellLocation = Math.floor(Math.random() * 225);
 
