@@ -5,7 +5,11 @@
 let cellsEl; // creating this global variable to put cellsEl in the global scope to access later, essentially holding all the grid cells / array of DIVS 
 let width = 15 // this will be my number of columns
 let height = 15 // this will be my number of rows
-let gameInterval;
+let gameInterval; // adding the gameInterval to glboal scope and defining later 
+
+   let scoreCount = document.querySelector(".score");
+    let score = 0;
+
 
 // creating grid
 
@@ -29,6 +33,10 @@ const makeGrid = () => {
     }
     cellsEl = document.querySelectorAll('.cell'); // Stores all cells in cellsEl for easy reference, can access them later with cellsEl[index], note cellsEl is an ARRAY of DOM ELEMENTS (<div>) ( cells to be accesssed with [] )
     // console.dir(cellsEl);
+
+    // wanting score to only return to zero once the grid is "remade" so user doesn't lose their score straight away
+    score = 0;
+    document.getElementById('score').textContent = "Score: " + score;
 }
 
 makeGrid(); // calling the actual function tather than just declaring it 
@@ -140,6 +148,8 @@ const makeSnakeMove = () => {
 
     if (nextCellIndex === Number(foodCell.id)) { //reminder - Number(value) is a built-in JavaScript function...It takes anything that can represent a number(value) and converts it into a real number type.
         console.log('I ate the food!');
+         score++; // increment score by 1
+        document.getElementById('score').textContent = "Score: " + score;
         showFood(); // calling our function here to SHOW NEW FOOD as it was "eaten"
     } else {
         const snakeTail = snakeCellsLocation.shift(); // else remove tail to maintain snake length as nothing has happened to the user
@@ -148,7 +158,8 @@ const makeSnakeMove = () => {
 }
 
 // forLoop/whielLoop not ossible here as it would be too fast, method is setInterval to keep the loop moving at a given pace in ms
-gameInterval = setInterval(makeSnakeMove, 200);
+gameInterval = setInterval(makeSnakeMove, 100);
+
 
 
 // functino to show food and move it in random places EXCEPT where the snake already is 
@@ -175,6 +186,7 @@ const resetGame = () => {
 
     gameOverBox.classList.remove('hidden');
 
+
     restartBtn.onclick = () => {
 
         gameOverBox.classList.add('hidden');
@@ -182,16 +194,19 @@ const resetGame = () => {
         gridEl.innerHTML = ''; // clear old grid
         makeGrid(); // rebuild grid
 
-
         snakeCellsLocation = [107, 108, 109, 110];
         direction = undefined;
 
         showSnakeCells();
         showFood();
 
-        gameInterval = setInterval(makeSnakeMove, 200);
+        gameInterval = setInterval(makeSnakeMove, 100);
+       
 
     };
 
-  
+   
+
 }
+
+// const gameInterval = () => {setInterval(makeSnakeMove, 200)};
