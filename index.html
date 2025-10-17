@@ -12,7 +12,16 @@
 
 <body>
     <H1>Welcome to Jessie's retro Snake!</H1>
-    <button id="instructions">Learn How To Play</button>
+    <button id="instructions-btn">Learn How To Play</button>
+    <div id="instructions-box" class="hidden">
+        <h3>How to Play</h3>
+        <ul>
+            <li>Use the arrow keys to move your snake 🐍</li>
+            <li>Eat the blue squares to grow longer</li>
+            <li>Don’t hit the walls or yourself!</li>
+        </ul>
+        <button id="close-instructions">Close</button>
+    </div>
     <h2>Press any Arrow to start game</h2>
     <div id="grid"></div>
 </body>

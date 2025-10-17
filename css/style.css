@@ -28,14 +28,35 @@ body {
     background-color: lightblue;
     border: 1px solid black;
     justify-content: center;
-    width: 40px;
-    height: 40px;
+    width: 20px;
+    height: 20px;
     align-items: center;
     transition: background-color 0.1s;
 
 }
 
-#instructions {
+#instructions-btn {
     background-color: lightblue;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+ }
+
+ #instructions-box {
+  
+  border: 2px solid black;
+  padding: 20px;
+  width: 300px;
+  margin: 20px auto;
+  text-align: left;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgb(7, 6, 6);
+}
+
+.hidden {
+  display: none;
+}
+
+#close-instructions {
+   background-color: lightblue;
+  text-align: center;
     font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
  }

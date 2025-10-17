@@ -177,3 +177,16 @@ const resetGame = () => {
     gameInterval = setInterval(makeSnakeMove, 200);
 
 };
+
+// Instructions Toggle 
+const instructionsBtn = document.querySelector('#instructions-btn');
+const instructionsBox = document.querySelector('#instructions-box');
+const closeBtn = document.querySelector('#close-instructions');
+
+instructionsBtn.addEventListener('click', () => {
+  instructionsBox.classList.toggle('hidden');
+});
+
+closeBtn.addEventListener('click', () => {
+  instructionsBox.classList.add('hidden');
+});
