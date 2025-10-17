@@ -60,3 +60,31 @@ body {
   text-align: center;
     font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
  }
+
+ #game-over {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: rgba(0, 0, 0, 0.85);
+  color: aqua;
+  padding: 40px;
+  text-align: center;
+  border-radius: 10px;
+  box-shadow: 0 0 20px black;
+  z-index: 100; /* ensures it appears above the grid */
+}
+
+.hidden {
+  display: none;
+}
+
+#restart-btn {
+  margin-top: 10px;
+  padding: 10px 20px;
+  font-size: 1rem;
+  background-color: aqua;
+  border-radius: 5px;
+  cursor:pointer
+}
+
