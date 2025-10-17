@@ -6,9 +6,9 @@ let cellsEl; // creating this global variable to put cellsEl in the global scope
 let width = 15 // this will be my number of columns
 let height = 15 // this will be my number of rows
 let gameInterval; // adding the gameInterval to glboal scope and defining later 
-
-   let scoreCount = document.querySelector(".score");
-    let score = 0;
+let foodCellLocation;
+let scoreCount = document.querySelector(".score");
+let score = 0;
 
 
 // creating grid
@@ -37,6 +37,7 @@ const makeGrid = () => {
     // wanting score to only return to zero once the grid is "remade" so user doesn't lose their score straight away
     score = 0;
     document.getElementById('score').textContent = "Score: " + score;
+
 }
 
 makeGrid(); // calling the actual function tather than just declaring it 
@@ -45,25 +46,23 @@ makeGrid(); // calling the actual function tather than just declaring it
 // console.log(cellsEl[107])
 
 
-// game over container & restart button 
+// game over popup & restart button variables (connecting HTML & JS via the DOM)
 const gameOverBox = document.querySelector('#game-over');
 const restartBtn = document.querySelector('#restart-btn');
 
-  // Instructions Toggle 
-    const instructionsBtn = document.querySelector('#instructions-btn');
-    const instructionsBox = document.querySelector('#instructions-box');
-    const closeBtn = document.querySelector('#close-instructions');
+// Instructions Toggle 
+const instructionsBtn = document.querySelector('#instructions-btn');
+const instructionsBox = document.querySelector('#instructions-box');
+const closeBtn = document.querySelector('#close-instructions');
 
-    instructionsBtn.addEventListener('click', () => {
-        console.log(instructionsBtn)
-        instructionsBox.classList.toggle('hidden');
-    });
+instructionsBtn.addEventListener('click', () => {
+    console.log(instructionsBtn)
+    instructionsBox.classList.toggle('hidden');
+});
 
-    closeBtn.addEventListener('click', () => {
-        instructionsBox.classList.add('hidden');
-    });
-
-
+closeBtn.addEventListener('click', () => {
+    instructionsBox.classList.add('hidden');
+});
 
 // creating Snake 
 
@@ -143,14 +142,21 @@ const makeSnakeMove = () => {
     snakeCellsLocation.push(nextCellIndex);     // pushes the index to add a new head to the snake, not tpushing he element anymore (fix)
 
 
-
     // If snake moves and eats food (skip remvoing the tail to allow snake to grow!!)
 
     if (nextCellIndex === Number(foodCell.id)) { //reminder - Number(value) is a built-in JavaScript function...It takes anything that can represent a number(value) and converts it into a real number type.
         console.log('I ate the food!');
-         score++; // increment score by 1
+
+        score++; // increment score by 1
         document.getElementById('score').textContent = "Score: " + score;
         showFood(); // calling our function here to SHOW NEW FOOD as it was "eaten"
+
+        if (score > 5) { // speed snake up if score goes above 5
+            clearInterval(gameInterval); // stop old interval
+            gameInterval = setInterval(makeSnakeMove, 100);
+
+        }
+
     } else {
         const snakeTail = snakeCellsLocation.shift(); // else remove tail to maintain snake length as nothing has happened to the user
         cellsEl[snakeTail].style.backgroundColor = '';
@@ -158,8 +164,14 @@ const makeSnakeMove = () => {
 }
 
 // forLoop/whielLoop not ossible here as it would be too fast, method is setInterval to keep the loop moving at a given pace in ms
-gameInterval = setInterval(makeSnakeMove, 100);
+gameInterval = setInterval(makeSnakeMove, 200);
 
+// Attempted to start food location in same place each time 
+// const startFood = () => {
+//     foodCellLocation = [119];
+//     cellsEl[foodCellLocation].style.backgroundColor = "blue";
+// };
+// startFood();
 
 
 // functino to show food and move it in random places EXCEPT where the snake already is 
@@ -186,7 +198,6 @@ const resetGame = () => {
 
     gameOverBox.classList.remove('hidden');
 
-
     restartBtn.onclick = () => {
 
         gameOverBox.classList.add('hidden');
@@ -200,12 +211,11 @@ const resetGame = () => {
         showSnakeCells();
         showFood();
 
-        gameInterval = setInterval(makeSnakeMove, 100);
-       
+        gameInterval = setInterval(makeSnakeMove, 200);
 
     };
 
-   
+    // resetGame();
 
 }
 
